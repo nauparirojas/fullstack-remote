@@ -1,36 +1,42 @@
-# Laboratorio 09: Sistema de Registro de Contacto (PHP vs JSP)
+# Laboratorio 09: Sistema de Registro de Contacto Fullstack (PHP & JSP)
 
-## 1. Integrantes del Equipo
-* **Estudiante 1:** Naupari Rojas Jhosep Amed
+**Asignatura:** Desarrollo de Aplicaciones Web (IS093A)  
+**Institución:** Universidad Nacional del Centro del Perú - Facultad de Ingeniería de Sistemas  
+**Estudiante:** Naupari Rojas Jhosep Amed  
+**Repositorio:** `fullstack-remote`  
 
 ---
 
-## 2. Diagrama de Flujo del Ciclo HTTP (Request / Response)
+## 1. Diagrama de Flujo del Ciclo HTTP (Request / Response)
+
+El siguiente flujo describe de manera detallada el ciclo completo de procesamiento HTTP desde el cliente hasta la respuesta y renderizado final en el navegador:
 
 ```text
-[ Cliente (Navegador) ]
-        │
-        │  1. Resolución DNS (Domain Name Resolution)
-        ▼
-[ Servidor DNS ]  ──▶ Devuelve Dirección IP (ej. 127.0.0.1)
-        │
-        │  2. Handshake TCP/IP (Establecimiento de conexión en puerto 80 / 8080)
-        ▼
+[ CLIENTE: Navegador Web ]
+       │
+       │  1. Resolución DNS
+       ▼
+[ Servidor DNS ] ─────────────────▶ Devuelve IP (ej. 127.0.0.1)
+       │
+       │  2. Handshake TCP/IP (Establece conexión en puerto 80 para Apache o 8080 para Tomcat)
+       ▼
 [ HTTP Request (POST /procesar.php o /procesar.jsp) ]
-        │  • Headers: Content-Type, Cookie (PHPSESSID / JSESSIONID)
-        │  • Body: nombre=Daniel&correo=daniel@example.com
-        ▼
-[ Servidor Web / Application Container (Apache HTTP / Apache Tomcat) ]
-        │
-        │  3. Evaluación de Rutas y Ejecución del Engine Backend
-        ▼
-[ Engine Backend (PHP / Servlet Container JSP) ]
-        │  • Validar Método POST (405 Method Not Allowed si es GET)
-        │  • Sanitizar entradas (Prevención XSS)
-        │  • Almacenar en sesión (array acumulativo en $_SESSION / HttpSession)
-        ▼
-[ HTTP Response (200 OK / 400 Bad Request) ]
-        │  • Content-Type: text/html; charset=UTF-8
-        │  • Body: Documento HTML generado con la tabla acumulativa
-        ▼
-[ Renderizado en Cliente (DOM Parsing, Layout & Paint) ]
+       │  • Headers: Content-Type: application/x-www-form-urlencoded
+       │  • Cookies: PHPSESSID (PHP) / JSESSIONID (JSP)
+       │  • Body: nombre=Daniel&correo=daniel@example.com
+       ▼
+[ SERVIDOR WEB / CONTENEDOR (Apache HTTP Server / Apache Tomcat) ]
+       │
+       │  3. Verificación de Métodos HTTP y Manejo de Rutas
+       ▼
+[ ENGINE BACKEND (PHP Engine / Servlet Container JVM) ]
+       │  • Validar Método POST (Si es GET ──▶ Retorna HTTP 405 Method Not Allowed)
+       │  • Sanitización e Inmunización XSS (htmlspecialchars / Reemplazo de caracteres HTML)
+       │  • Validación de datos de entrada (Si son nulos ──▶ Retorna HTTP 400 Bad Request)
+       │  • Persistencia temporal: Almacenar objeto en $_SESSION (PHP) / HttpSession (JSP)
+       ▼
+[ HTTP Response (200 OK) ]
+       │  • Headers: Content-Type: text/html; charset=UTF-8
+       │  • Body: Estructura HTML procesada con la tabla acumulativa de registros
+       ▼
+[ RENDERIZADO EN CLIENTE ] ──────▶ El navegador procesa el HTML y muestra la tabla al usuario
