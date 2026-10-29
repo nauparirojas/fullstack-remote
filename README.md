@@ -1,7 +1,7 @@
 # Laboratorio 09: Sistema de Registro de Contacto (PHP vs JSP)
 
 ## 1. Integrantes del Equipo
-* **Estudiante 1:** Daniel Naupari Rojas
+* **Estudiante 1:** Naupari Rojas Jhosep Amed
 
 ---
 
